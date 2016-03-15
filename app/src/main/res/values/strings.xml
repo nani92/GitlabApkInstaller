@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GitlabApkInstaller</string>
+    <string name="login_hint">Login/Email</string>
+    <string name="password_hint">Password</string>
+    <string name="Login">Login</string>
+
+</resources>
