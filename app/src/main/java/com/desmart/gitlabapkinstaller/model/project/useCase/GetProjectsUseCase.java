@@ -1,4 +1,4 @@
-package com.desmart.gitlabapkinstaller.model.user.useCase;
+package com.desmart.gitlabapkinstaller.model.project.useCase;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,19 +10,18 @@ import com.desmart.gitlabapkinstaller.model.UseCase;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
+import java.util.List;
 
 import retrofit.Call;
 
 /**
- * Created by nataliajastrzebska on 13/03/16.
+ * Created by nataliajastrzebska on 10/04/16.
  */
-public class GetUserUseCase implements UseCase {
-    JsonObject jsonObject;
-    Context context;
+public class GetProjectsUseCase implements UseCase {
+    private Context context;
+    private List<JsonElement> projectElements;
 
-    public GetUserUseCase(JsonObject jsonObject, Context context) {
-        this.jsonObject = jsonObject;
+    public GetProjectsUseCase(Context context) {
         this.context = context;
     }
 
@@ -31,12 +30,11 @@ public class GetUserUseCase implements UseCase {
         GitlabService.GitlabServiceInterface client = ServiceGenerator.createService(GitlabService.GitlabServiceInterface.class, this.context);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.context);
         String privateToken = prefs.getString(GitlabService.KEY_TOKEN, "");
-        Call<JsonElement> userCall = client.getUser(privateToken);
-        JsonElement jsonElement = userCall.execute().body();
-        this.jsonObject = jsonElement.getAsJsonObject();
+        Call<List<JsonElement>> getProjects = client.getProjects(privateToken);
+        this.projectElements = getProjects.execute().body();
     }
 
-    public JsonObject getJsonObject() {
-        return this.jsonObject;
+    public List<JsonElement> getProjectElements() {
+        return projectElements;
     }
 }

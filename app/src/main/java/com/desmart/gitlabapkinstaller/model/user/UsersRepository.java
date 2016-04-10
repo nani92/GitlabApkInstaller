@@ -31,12 +31,16 @@ public class UsersRepository extends Repository {
     }
 
     public UserEntity getUser() throws Exception {
-        JsonObject jsonObject = new JsonObject();
-        GetUserUseCase getUserUseCase = new GetUserUseCase(jsonObject, this.context);
-        getUserUseCase.execute();
+        GetUserUseCase getUserUseCase = new GetUserUseCase(new JsonObject(), this.context);
 
-        return createUser(jsonObject);
+        try {
+            getUserUseCase.execute();
+        }
+        catch (Exception exception) {
+
+        }
+        finally {
+            return createUser(getUserUseCase.getJsonObject());
+        }
     }
-
-
 }

@@ -19,7 +19,8 @@
             style="@style/AppTheme.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login_hint"/>
+            android:hint="@string/login_hint"
+            android:text="nani@desmart.com"/>
 
         <EditText
             android:id="@+id/passwordEditText"

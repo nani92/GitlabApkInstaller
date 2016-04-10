@@ -3,6 +3,7 @@ package com.desmart.gitlabapkinstaller.api;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
@@ -24,6 +25,7 @@ public class AuthInterceptor implements Interceptor{
 
     @Override
     public Response intercept(Chain chain) throws IOException {
+        Log.d("Natalia", "Intercept");
         Request request = chain.request();
         Request newRequest;
 
@@ -31,7 +33,7 @@ public class AuthInterceptor implements Interceptor{
         String token = preferences.getString(GitlabService.KEY_TOKEN, "");
 
         if(!token.isEmpty()) {
-            newRequest = request.newBuilder().addHeader("Authorization", token).build();
+            newRequest = request.newBuilder().addHeader("PRIVATE-TOKEN", token).build();
 
             return chain.proceed(newRequest);
         }

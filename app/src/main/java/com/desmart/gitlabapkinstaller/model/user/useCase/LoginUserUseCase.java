@@ -34,22 +34,11 @@ public class LoginUserUseCase implements UseCase {
 
     @Override
     public void execute() throws Exception {
-        GitlabService.GitlabServiceInterface client = ServiceGenerator.createService(GitlabService.GitlabServiceInterface.class, this.context);
+        GitlabService.GitlabTokenInterface client = ServiceGenerator.createService(GitlabService.GitlabTokenInterface.class, this.context);
         Call<JsonElement> auth = client.authenticate(this.login, this.password);
-        auth.enqueue(new Callback<JsonElement>() {
-
-            @Override
-            public void onResponse(Response<JsonElement> response, Retrofit retrofit) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                JsonObject jsonObject = response.body().getAsJsonObject();
-                String privateToken = jsonObject.get("private_token").toString();
-                prefs.edit().putString(GitlabService.KEY_TOKEN, privateToken).apply();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+        JsonObject jsonObject = auth.execute().body().getAsJsonObject();
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String privateToken = jsonObject.get("private_token").getAsString();
+        //prefs.edit().putString(GitlabService.KEY_TOKEN, privateToken).apply();
     }
 }
